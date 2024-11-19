@@ -15,11 +15,11 @@ public class Trabajo {
 
     private String nombre;
 
-    @OneToOne
+    @ManyToOne
     private Categoria categoria;
 
     @ElementCollection
-    private List<String> listaImagenes;
+    private List<String> listaMedia;
 
     @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,12 +44,12 @@ public class Trabajo {
         this.nombre = nombre;
     }
 
-    public List<String> getListaImagenes() {
-        return listaImagenes;
+    public List<String> getListaMedia() {
+        return listaMedia;
     }
 
-    public void setListaImagenes(List<String> listaImagenes) {
-        this.listaImagenes = listaImagenes;
+    public void setListaMedia(List<String> listaMedia) {
+        this.listaMedia = listaMedia;
     }
 
     public Date getFechaRegistro() {

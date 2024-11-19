@@ -13,9 +13,13 @@ import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -79,4 +83,61 @@ public class CategoriaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //Eliminar segun id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarCategoria(@PathVariable Long id) {
+        Optional<Categoria> categoriaOpt = categoriaService.obtenerCategoriaPorId(id);
+        if (categoriaOpt.isPresent()) {
+            categoriaService.eliminarCategoria(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<CategoriaDTO> uploadProductImages(@PathVariable Long id,
+            @RequestParam("image") MultipartFile file) throws IOException {
+            Categoria categoria = categoriaService.obtenerCategoriaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        String imagePaths;
+        String uploadDir = "/opt/" + "juvica" + "/imgCategory/";
+
+        String pngFileName = UUID.randomUUID().toString() + ".png";
+        String filePath = uploadDir + pngFileName;
+
+        File tempFile = new File(filePath);
+        file.transferTo(tempFile);
+
+        imagePaths = "/imgCategory/" + pngFileName;
+
+        categoria.setImUrlg(imagePaths);
+        categoriaService.guardarCategoria(categoria);
+        CategoriaDTO categoriaDTO = dtoConverterService.convertToCategoriaDTO(categoria);
+
+        return ResponseEntity.ok(categoriaDTO);
+    }
+
+    @PutMapping("/{id}/remove-image")
+    public ResponseEntity<CategoriaDTO> removeImage(@PathVariable Long id) {
+        Optional<Categoria> categoriaToUpdate = categoriaService.obtenerCategoriaPorId(id);
+
+        if (categoriaToUpdate.isPresent()) {
+            Categoria existingCategory = categoriaToUpdate.get();
+
+            // Eliminar el URL de la imagen
+            existingCategory.setImUrlg(null);
+
+            // Guardar la categoría actualizada sin imagen
+            Categoria updatedCategory = categoriaService.actualizarCategoria(id, existingCategory);
+
+            return ResponseEntity.ok(dtoConverterService.convertToCategoriaDTO(updatedCategory));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    
 }

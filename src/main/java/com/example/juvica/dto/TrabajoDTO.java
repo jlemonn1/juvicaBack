@@ -1,13 +1,12 @@
 package com.example.juvica.dto;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class TrabajoDTO {
 
     private Long id;
     private String nombre;
-    private List<String> listaImagenes;
+    private List<String> listaMedia;
     private Date fechaRegistro;
     private String comentarioLargo;
 
@@ -28,12 +27,12 @@ public class TrabajoDTO {
         this.nombre = nombre;
     }
 
-    public List<String> getListaImagenes() {
-        return listaImagenes;
+    public List<String> getListaMedia() {
+        return listaMedia;
     }
 
-    public void setListaImagenes(List<String> listaImagenes) {
-        this.listaImagenes = listaImagenes;
+    public void setListaMedia(List<String> listaMedia) {
+        this.listaMedia = listaMedia;
     }
 
     public Date getFechaRegistro() {

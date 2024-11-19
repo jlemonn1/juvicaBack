@@ -33,7 +33,7 @@ public class DtoConverterService {
         TrabajoDTO dto = new TrabajoDTO();
         dto.setId(trabajo.getId());
         dto.setNombre(trabajo.getNombre());
-        dto.setListaImagenes(trabajo.getListaImagenes());
+        dto.setListaMedia(trabajo.getListaMedia());
         dto.setFechaRegistro(trabajo.getFechaRegistro());
         dto.setComentarioLargo(trabajo.getComentarioLargo());
         return dto;

@@ -33,7 +33,7 @@ public class TrabajoService {
     public Trabajo actualizarTrabajo(Long id, Trabajo trabajoDetalles) {
         return trabajoRepository.findById(id).map(trabajo -> {
             trabajo.setNombre(trabajoDetalles.getNombre());
-            trabajo.setListaImagenes(trabajoDetalles.getListaImagenes());
+            trabajo.setListaMedia(trabajoDetalles.getListaMedia());
             trabajo.setComentarioLargo(trabajoDetalles.getComentarioLargo());
             return trabajoRepository.save(trabajo);
         }).orElseThrow(() -> new RuntimeException("Trabajo no encontrado con el ID: " + id));
